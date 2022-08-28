@@ -1,0 +1,3 @@
+concurrent_log_handler==0.9.20
+filelock==3.8.0
+jsonformatter==0.3.1
