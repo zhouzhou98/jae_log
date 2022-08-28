@@ -9,7 +9,7 @@ setup(
     description=(
         '将日志打造成jae格式'
     ),
-    long_description=open('README.rst').read(),
+    long_description='日志框架的封装',
     author='suyuzhou',
     author_email='1404031711@qq.com',
     maintainer='suyuzhou',
@@ -17,7 +17,7 @@ setup(
     license='BSD License',
     packages=find_packages(),
     platforms=["all"],
-    url='<项目的网址，我一般都是github的url>',
+    url='git@github.com:zhouzhou98/jae_log.git',
     install_requires=[
         'concurrent_log_handler',
         'filelock',
