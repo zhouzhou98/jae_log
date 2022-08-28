@@ -1,12 +1,15 @@
 import logging
 import os
 from pathlib import Path  # noqa
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 默认的日志文件夹,如果不写明磁盘名，则是项目代码所在磁盘的根目录下的logs
-LOG_PATH = os.path.join(BASE_DIR, 'logs')
+# LOG_PATH = '/logs'
+LOG_PATH = Path(__file__).absolute().parent / Path("logs")
+# if os.name == 'posix':  # linux非root用户和mac用户无法操作 /pythonlogs 文件夹，没有权限，默认修改为   home/[username]  下面了。例如你的linux用户名是  xiaomin，那么默认会创建并在 /home/xiaomin/pythonlogs文件夹下写入日志文件。
+#     home_path = os.environ.get("HOME", '/')  # 这个是获取linux系统的当前用户的主目录，不需要亲自设置
+#     LOG_PATH = Path(home_path) / Path('pythonlogs')
 # 如果不存在则创建
-if not os.path.exists(LOG_PATH):
-    os.makedirs(LOG_PATH, exist_ok=True)
+# if not os.path.exists(LOG_PATH):
+#     os.makedirs(LOG_PATH, exist_ok=True)
 LOG_FILE_HANDLER_TYPE = 2
 # 对同一个日志文件，默认最多备份几个文件，超过就删除了
 LOG_FILE_BACKUP_COUNT = 3
