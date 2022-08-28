@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='jae_log',
-    version='1.0.2',
+    version='1.0.0',
     description=(
         '将日志打造成jae格式'
     ),
