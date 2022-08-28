@@ -54,10 +54,12 @@ def use_config_form_config_module():
 
 def auto_creat_config_file_to_project_root_path():
     if Path(sys.path[1]).as_posix() == Path(__file__).parent.parent.absolute().as_posix():
+        jae_print(f'不希望在本项目 {sys.path[1]} 里面创建 config.py')
         pass
         jae_print(f'不希望在本项目 {sys.path[1]} 里面创建 config.py')
         return
     if '/lib/python' in sys.path[1] or r'\lib\python' in sys.path[1] or '.zip' in sys.path[1]:
+        jae_print(f'不希望在本项目 {sys.path[1]} 里面创建 config.py')
         raise EnvironmentError('')
     copyfile(Path(__file__).parent / Path('config.py'), Path(sys.path[1]) / Path('config.py'))
 use_config_form_config_module()

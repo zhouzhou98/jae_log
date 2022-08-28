@@ -8,13 +8,13 @@ LOG_PATH = Path(__file__).absolute().parent / Path("logs")
 #     home_path = os.environ.get("HOME", '/')  # 这个是获取linux系统的当前用户的主目录，不需要亲自设置
 #     LOG_PATH = Path(home_path) / Path('pythonlogs')
 # 如果不存在则创建
-# if not os.path.exists(LOG_PATH):
-#     os.makedirs(LOG_PATH, exist_ok=True)
+if not os.path.exists(LOG_PATH):
+    os.makedirs(LOG_PATH, exist_ok=True)
 LOG_FILE_HANDLER_TYPE = 2
 # 对同一个日志文件，默认最多备份几个文件，超过就删除了
 LOG_FILE_BACKUP_COUNT = 3
 # 默认日志级别，低于此级别的日志不记录了。例如设置为INFO，那么logger.debug的不会记录，只会记录logger.info以上级别的。
-LOG_LEVEL_FILTER = logging.WARN
+LOG_LEVEL_FILTER = logging.DEBUG
 # 单位是M,每个文件的切片大小，超过多少后就自动切割
 LOG_FILE_SIZE = 1024
 # 使用背景颜色
