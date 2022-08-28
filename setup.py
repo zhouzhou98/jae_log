@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='jae_log',
-    version='v0.0.1',
+    version='0.0.1',
     description=(
         '将日志打造成jae格式'
     ),
@@ -17,7 +17,7 @@ setup(
     license='BSD License',
     packages=find_packages(),
     platforms=["all"],
-    url='git@github.com:zhouzhou98/jae_log.git',
+    url='https://github.com/zhouzhou98/jae_log.git',
     install_requires=[
         'concurrent_log_handler',
         'filelock',
