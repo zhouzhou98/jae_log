@@ -1,0 +1,2 @@
+2022-08-28 16:12:21|ERROR|thread:8670615040|logger:test_nb_log_conccreent|mdc:{}|others:{fuc: <module>, line: "/Users/suyuzhou/project/python/jae_log/test/test.py:9"}|message:434wr
+2022-08-28 16:15:04|ERROR|thread:8674092544|logger:test_nb_log_conccreent|mdc:{}|others:{fuc: <module>, line: "/Users/suyuzhou/project/python/jae_log/test/pay/test.py:9"}|message:434wr

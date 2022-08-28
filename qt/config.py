@@ -2,8 +2,8 @@ import logging
 import os
 from pathlib import Path  # noqa
 # 默认的日志文件夹,如果不写明磁盘名，则是项目代码所在磁盘的根目录下的logs
-# LOG_PATH = '/logs'
-LOG_PATH = Path(__file__).absolute().parent / Path("logs")
+LOG_PATH = '/logs'
+# LOG_PATH = Path(__file__).absolute().parent / Path("logs")
 # if os.name == 'posix':  # linux非root用户和mac用户无法操作 /pythonlogs 文件夹，没有权限，默认修改为   home/[username]  下面了。例如你的linux用户名是  xiaomin，那么默认会创建并在 /home/xiaomin/pythonlogs文件夹下写入日志文件。
 #     home_path = os.environ.get("HOME", '/')  # 这个是获取linux系统的当前用户的主目录，不需要亲自设置
 #     LOG_PATH = Path(home_path) / Path('pythonlogs')
@@ -14,7 +14,7 @@ LOG_FILE_HANDLER_TYPE = 2
 # 对同一个日志文件，默认最多备份几个文件，超过就删除了
 LOG_FILE_BACKUP_COUNT = 3
 # 默认日志级别，低于此级别的日志不记录了。例如设置为INFO，那么logger.debug的不会记录，只会记录logger.info以上级别的。
-LOG_LEVEL_FILTER = logging.WARN
+LOG_LEVEL_FILTER = logging.DEBUG
 # 单位是M,每个文件的切片大小，超过多少后就自动切割
 LOG_FILE_SIZE = 1024
 # 使用背景颜色
