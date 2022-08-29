@@ -117,11 +117,14 @@ class JaeLogManager(object):
 
     def get_logger_and_add_handlers(self, *,
                                     log_filename=None,
+                                    log_path=None,
                                     log_file_handler_type: int = None):
 
         do_not_use_color_handler = not config.DEFAULUT_USE_COLOR_HANDLER
         log_file_size = config.LOG_FILE_SIZE
-        log_path = config.LOG_PATH
+        if log_path is None:
+            # print(nb_log_config_default.LOG_PATH)
+            log_path = config.LOG_PATH or './logs'
         formatter_template = config.FORMATTER_KIND
         log_level_int = config.LOG_LEVEL_FILTER
         self._logger_level = log_level_int * 10 if log_level_int < 10 else log_level_int
