@@ -2,8 +2,9 @@ import logging
 import os
 from pathlib import Path  # noqa
 # 默认的日志文件夹,如果不写明磁盘名，则是项目代码所在磁盘的根目录下的logs
-# LOG_PATH = '/logs'
-LOG_PATH = Path(__file__).absolute().parent / Path("logs")
+LOG_PATH = './logs'
+# LOG_PATH = Path(__file__).parent.absolute() / Path("logs")
+# print(LOG_PATH)
 # if os.name == 'posix':  # linux非root用户和mac用户无法操作 /pythonlogs 文件夹，没有权限，默认修改为   home/[username]  下面了。例如你的linux用户名是  xiaomin，那么默认会创建并在 /home/xiaomin/pythonlogs文件夹下写入日志文件。
 #     home_path = os.environ.get("HOME", '/')  # 这个是获取linux系统的当前用户的主目录，不需要亲自设置
 #     LOG_PATH = Path(home_path) / Path('pythonlogs')

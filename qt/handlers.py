@@ -1,22 +1,16 @@
-# noinspection PyMissingOrEmptyDocstring
-import atexit
 import copy
 import multiprocessing
-import queue
 import re
 import sys
 import os
 import traceback
 import time
 from pathlib import Path
-from queue import Queue, Empty
 import logging
-from concurrent_log_handler import ConcurrentRotatingFileHandler
-from filelock import FileLock
-from jsonformatter import JsonFormatter
 from qt import config
-from threading import Lock, Thread
 from qt.jae_print import jae_print
+import pytz
+from datetime import datetime
 os_name = os.name
 
 very_jae_print = jae_print
@@ -72,21 +66,15 @@ class ColorHandler(logging.Handler):
     def __build_color_msg_with_no_backgroud_color(self, record_level, record_copy: logging.LogRecord, ):
         complete_msg = self.format(record_copy)
         if record_level == 10:
-            # msg_color = ('\033[0;32m%s\033[0m' % msg)  # 绿色
-            # print(msg1)
             msg_color = f'\033[0;32m{complete_msg}\033[0m'  # 绿色
         elif record_level == 20:
-            # msg_color = ('\033[%s;%sm%s\033[0m' % (self._display_method, self.bule, msg))  # 青蓝色 36    96
+
             msg_color = f'\033[0;36m{complete_msg}\033[0m'
         elif record_level == 30:
-            # msg_color = ('\033[%s;%sm%s\033[0m' % (self._display_method, self.yellow, msg))
             msg_color = f'\033[0;33m{complete_msg}\033[0m'
         elif record_level == 40:
-            # msg_color = ('\033[%s;35m%s\033[0m' % (self._display_method, msg))  # 紫红色
             msg_color = f'\033[0;31m{complete_msg}\033[0m'
-
         elif record_level == 50:
-            # msg_color = ('\033[%s;31m%s\033[0m' % (self._display_method, msg))  # 血红色
             msg_color = f'\033[0;35m{complete_msg}\033[0m'
         else:
             msg_color = f'{complete_msg}'
@@ -132,13 +120,33 @@ class ConcurrentDayRotatingFileHandlerLinux(logging.Handler):
         self.backupCount = back_count or config.LOG_FILE_BACKUP_COUNT
         self.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}(\.\w+)?$", re.ASCII)
         self.extMatch2 = re.compile(r"^\d{2}-\d{2}-\d{2}(\.\w+)?$", re.ASCII)
-        time_str = time.strftime('%Y-%m-%d-%H')
+        utc = pytz.utc
+        beijing = pytz.timezone("Asia/Shanghai")
+        fmt = '%Y-%m-%d-%H'
+        # 时间戳
+        loc_timestamp = time.time()
+        # 转utc时间 datetime.datetime 类型
+        utc_date = datetime.utcfromtimestamp(loc_timestamp)
+        # 转utc当地 标识的时间
+        utc_loc_time = utc.localize(utc_date)
+        beijing_time = utc_loc_time.astimezone(beijing)
+        time_str = beijing_time.strftime(fmt)
         self.time_str = time_str
         self._lock = multiprocessing.Lock()
 
     def _get_fp(self, name):
         with self._lock:
-            time_str = time.strftime('%Y-%m-%d-%H')
+            utc = pytz.utc
+            beijing = pytz.timezone("Asia/Shanghai")
+            fmt = '%Y-%m-%d-%H'
+            # 时间戳
+            loc_timestamp = time.time()
+            # 转utc时间 datetime.datetime 类型
+            utc_date = datetime.utcfromtimestamp(loc_timestamp)
+            # 转utc当地 标识的时间
+            utc_loc_time = utc.localize(utc_date)
+            beijing_time = utc_loc_time.astimezone(beijing)
+            time_str = beijing_time.strftime(fmt)
             if time_str != self.time_str:
                 try:
                     self.fp.close()
@@ -153,7 +161,17 @@ class ConcurrentDayRotatingFileHandlerLinux(logging.Handler):
         name = record.levelname
         try:
             msg = self.format(record)
-            time_str = time.strftime('%Y-%m-%d-%H')
+            utc = pytz.utc
+            beijing = pytz.timezone("Asia/Shanghai")
+            fmt = '%Y-%m-%d-%H'
+            # 时间戳
+            loc_timestamp = time.time()
+            # 转utc时间 datetime.datetime 类型
+            utc_date = datetime.utcfromtimestamp(loc_timestamp)
+            # 转utc当地 标识的时间
+            utc_loc_time = utc.localize(utc_date)
+            beijing_time = utc_loc_time.astimezone(beijing)
+            time_str = beijing_time.strftime(fmt)
             new_file_name = self.file_name + '.' + name + '.log.' + time_str
             path_obj = Path(self.file_path) / Path(new_file_name)
             path_obj.touch(exist_ok=True)
@@ -174,7 +192,17 @@ class ConcurrentSecondRotatingFileHandlerLinux(logging.Handler):
         self.backupCount = back_count or config.LOG_FILE_BACKUP_COUNT
         self.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}(\.\w+)?$", re.ASCII)
         self.extMatch2 = re.compile(r"^\d{2}-\d{2}-\d{2}(\.\w+)?$", re.ASCII)
-        time_str = time.strftime('%H-%M-%S')  # 方便测试用的，方便观察。
+        utc = pytz.utc
+        beijing = pytz.timezone("Asia/Shanghai")
+        fmt = '%Y-%m-%d-%H'
+        # 时间戳
+        loc_timestamp = time.time()
+        # 转utc时间 datetime.datetime 类型
+        utc_date = datetime.utcfromtimestamp(loc_timestamp)
+        # 转utc当地 标识的时间
+        utc_loc_time = utc.localize(utc_date)
+        beijing_time = utc_loc_time.astimezone(beijing)
+        time_str = beijing_time.strftime(fmt)
         new_file_name = self.file_name + '.' + time_str
         path_obj = Path(self.file_path) / Path(new_file_name)
         path_obj.touch(exist_ok=True)
@@ -184,7 +212,17 @@ class ConcurrentSecondRotatingFileHandlerLinux(logging.Handler):
 
     def _get_fp(self, name):
         with self._lock:
-            time_str = time.strftime('%Y-%m-%d-%H')
+            utc = pytz.utc
+            beijing = pytz.timezone("Asia/Shanghai")
+            fmt = '%Y-%m-%d-%H'
+            # 时间戳
+            loc_timestamp = time.time()
+            # 转utc时间 datetime.datetime 类型
+            utc_date = datetime.utcfromtimestamp(loc_timestamp)
+            # 转utc当地 标识的时间
+            utc_loc_time = utc.localize(utc_date)
+            beijing_time = utc_loc_time.astimezone(beijing)
+            time_str = beijing_time.strftime(fmt)
             if time_str != self.time_str:
                 try:
                     self.fp.close()
@@ -199,7 +237,17 @@ class ConcurrentSecondRotatingFileHandlerLinux(logging.Handler):
         name = record.levelname
         try:
             msg = self.format(record)
-            time_str = time.strftime('%Y-%m-%d-%H')
+            utc = pytz.utc
+            beijing = pytz.timezone("Asia/Shanghai")
+            fmt = '%Y-%m-%d-%H'
+            # 时间戳
+            loc_timestamp = time.time()
+            # 转utc时间 datetime.datetime 类型
+            utc_date = datetime.utcfromtimestamp(loc_timestamp)
+            # 转utc当地 标识的时间
+            utc_loc_time = utc.localize(utc_date)
+            beijing_time = utc_loc_time.astimezone(beijing)
+            time_str = beijing_time.strftime(fmt)
             new_file_name = self.file_name + '.' + name + '.log.' + time_str
             path_obj = Path(self.file_path) / Path(new_file_name)
             path_obj.touch(exist_ok=True)
